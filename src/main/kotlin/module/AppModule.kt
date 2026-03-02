@@ -11,32 +11,14 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    // =========================
-    // PLANT
-    // =========================
-    single<IPlantRepository> {
-        PlantRepository()
-    }
+    // Plant
+    single<IPlantRepository> { PlantRepository() }
+    single { PlantService(get()) }
 
-    single {
-        PlantService(get())
-    }
+    // Rumah Adat
+    single<IRumahAdatRepository> { RumahAdatRepository() }
+    single { RumahAdatService(get()) }
 
-    // =========================
-    // RUMAH ADAT
-    // =========================
-    single<IRumahAdatRepository> {
-        RumahAdatRepository()
-    }
-
-    single {
-        RumahAdatService(get())
-    }
-
-    // =========================
-    // PROFILE
-    // =========================
-    single {
-        ProfileService()
-    }
+    // Profile
+    single { ProfileService() }
 }
