@@ -1,7 +1,9 @@
 package org.delcom.entities
 
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RumahAdat(
     val id: String,
     val nama: String,
