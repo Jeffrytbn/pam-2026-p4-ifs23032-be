@@ -10,31 +10,42 @@ import org.delcom.data.ErrorResponse
 import org.delcom.helpers.parseMessageToMap
 import org.delcom.services.PlantService
 import org.delcom.services.ProfileService
+import org.delcom.services.RumahAdatService
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
+
     val plantService: PlantService by inject()
     val profileService: ProfileService by inject()
+    val rumahAdatService: RumahAdatService by inject()
 
     install(StatusPages) {
+
         // Tangkap AppException
         exception<AppException> { call, cause ->
-            val dataMap: Map<String, List<String>> = parseMessageToMap(cause.message)
+            val dataMap: Map<String, List<String>> =
+                parseMessageToMap(cause.message)
 
             call.respond(
                 status = HttpStatusCode.fromValue(cause.code),
                 message = ErrorResponse(
                     status = "fail",
-                    message = if (dataMap.isEmpty()) cause.message else "Data yang dikirimkan tidak valid!",
-                    data = if (dataMap.isEmpty()) null else dataMap.toString()
+                    message = if (dataMap.isEmpty())
+                        cause.message
+                    else
+                        "Data yang dikirimkan tidak valid!",
+                    data = if (dataMap.isEmpty())
+                        null
+                    else
+                        dataMap.toString()
                 )
             )
         }
 
-        // Tangkap semua Throwable lainnya
+        // Tangkap semua error lainnya
         exception<Throwable> { call, cause ->
             call.respond(
-                status = HttpStatusCode.fromValue(500),
+                status = HttpStatusCode.InternalServerError,
                 message = ErrorResponse(
                     status = "error",
                     message = cause.message ?: "Unknown error",
@@ -45,24 +56,32 @@ fun Application.configureRouting() {
     }
 
     routing {
+
         get("/") {
             call.respondText("API telah berjalan. Dibuat oleh Jeffry Tambunan.")
         }
 
-        // Route Plants
+        // =========================
+        // ROUTE PLANTS
+        // =========================
         route("/plants") {
+
             get {
                 plantService.getAllPlants(call)
             }
+
             post {
                 plantService.createPlant(call)
             }
+
             get("/{id}") {
                 plantService.getPlantById(call)
             }
+
             put("/{id}") {
                 plantService.updatePlant(call)
             }
+
             delete("/{id}") {
                 plantService.deletePlant(call)
             }
@@ -72,11 +91,45 @@ fun Application.configureRouting() {
             }
         }
 
-        // Route Profile
-        route("/profile"){
+        // =========================
+        // ROUTE RUMAH ADAT
+        // =========================
+        route("/rumahadat") {
+
+            get {
+                rumahAdatService.getAllRumahAdat(call)
+            }
+
+            post {
+                rumahAdatService.createRumahAdat(call)
+            }
+
+            get("/{id}") {
+                rumahAdatService.getRumahAdatById(call)
+            }
+
+            put("/{id}") {
+                rumahAdatService.updateRumahAdat(call)
+            }
+
+            delete("/{id}") {
+                rumahAdatService.deleteRumahAdat(call)
+            }
+
+            get("/{id}/image") {
+                rumahAdatService.getRumahAdatImage(call)
+            }
+        }
+
+        // =========================
+        // ROUTE PROFILE
+        // =========================
+        route("/profile") {
+
             get {
                 profileService.getProfile(call)
             }
+
             get("/photo") {
                 profileService.getProfilePhoto(call)
             }
