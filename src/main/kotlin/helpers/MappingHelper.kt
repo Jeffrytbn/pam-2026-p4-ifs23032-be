@@ -2,7 +2,9 @@ package org.delcom.helpers
 
 import kotlinx.coroutines.Dispatchers
 import org.delcom.dao.PlantDAO
+import org.delcom.dao.RumahAdatDAO
 import org.delcom.entities.Plant
+import org.delcom.entities.RumahAdat
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -18,4 +20,16 @@ fun daoToModel(dao: PlantDAO) = Plant(
     dao.efekSamping,
     dao.createdAt,
     dao.updatedAt
+)
+
+fun daoToModel(dao: RumahAdatDAO) = RumahAdat(
+    id = dao.id.value.toString(),
+    nama = dao.nama,
+    pathGambar = dao.pathGambar,
+    asal = dao.asal,
+    deskripsi = dao.deskripsi,
+    ciriKhas = dao.ciriKhas,
+    fungsi = dao.fungsi,
+    createdAt = dao.createdAt,
+    updatedAt = dao.updatedAt
 )
