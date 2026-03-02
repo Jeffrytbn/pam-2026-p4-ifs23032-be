@@ -25,7 +25,7 @@ class RumahAdatService(private val rumahAdatRepository: IRumahAdatRepository) {
         val response = DataResponse(
             "success",
             "Berhasil mengambil daftar rumah adat",
-            mapOf(Pair("rumahAdat", items))
+            items
         )
         call.respond(response)
     }
@@ -40,7 +40,7 @@ class RumahAdatService(private val rumahAdatRepository: IRumahAdatRepository) {
         val response = DataResponse(
             "success",
             "Berhasil mengambil data rumah adat",
-            mapOf(Pair("rumahAdat", item))
+            item
         )
         call.respond(response)
     }
@@ -121,7 +121,7 @@ class RumahAdatService(private val rumahAdatRepository: IRumahAdatRepository) {
         val response = DataResponse(
             "success",
             "Berhasil menambahkan data rumah adat",
-            mapOf(Pair("rumahAdatId", id))
+            id
         )
         call.respond(response)
     }
